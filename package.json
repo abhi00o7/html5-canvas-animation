@@ -1,0 +1,15 @@
+{
+  "name": "html5-canvas-animation",
+  "version": "1.0.0",
+  "description": "html5 canvas practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "html5",
+    "canvas"
+  ],
+  "author": "Abhishek-kumar",
+  "license": "MIT"
+}
