@@ -21,7 +21,7 @@ const mouse = {
 canvas.addEventListener("click", function (event) {
   mouse.x = event.x;
   mouse.y = event.y;
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 3; i++) {
     particlesArray.push(new Particle());
   }
 });
@@ -29,7 +29,7 @@ canvas.addEventListener("click", function (event) {
 canvas.addEventListener("mousemove", function (event) {
   mouse.x = event.x;
   mouse.y = event.y;
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 10; i++) {
     particlesArray.push(new Particle());
   }
 });
@@ -40,10 +40,10 @@ class Particle {
     this.x = mouse.x;
     this.y = mouse.y;
     // random number between -0.5 and 0.5
-    this.size = Math.random() * 15 + 1;
+    this.size = Math.random() * 10 + 1;
     this.speedX = Math.random() * 3 - 1.5;
     this.speedY = Math.random() * 3 - 1.5;
-    this.color =  "hsl(" + hue + ", 100%, 50%)";
+    this.color = "hsl(" + hue + ", 100%, 50%)";
   }
   update() {
     this.x += this.speedX;
@@ -65,6 +65,20 @@ function handleParticles() {
   for (let i = 0; i < particlesArray.length; i++) {
     particlesArray[i].update();
     particlesArray[i].draw();
+    for (let j = i; j < particlesArray.length; j++) {
+      const dx = particlesArray[i].x - particlesArray[j].x;
+      const dy = particlesArray[i].y - particlesArray[j].y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < 100) {
+        ctx.beginPath();
+        ctx.strokeStyle = particlesArray[i].color;
+        ctx.lineWidth = particlesArray[i].size/15;
+        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+        ctx.stroke();
+        ctx.closePath();
+      }
+    }
     if (particlesArray[i].size <= 0.3) {
       particlesArray.splice(i, 1);
       i--;
@@ -74,11 +88,11 @@ function handleParticles() {
 // animate function
 function animate() {
   // clear the canvas before drawing the next frame
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(0, 0, 0, 0.02)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // ctx.fillStyle = "rgba(0, 0, 0, 0.02)";
+  // ctx.fillRect(0, 0, canvas.width, canvas.height);
   handleParticles();
-  hue+=5 // increment the hue
+  hue += 2; // increment the hue
   // call the drawCircle function
   requestAnimationFrame(animate);
 }
