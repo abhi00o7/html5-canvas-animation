@@ -2,6 +2,8 @@ const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d"); // ctx is the context
 const particlesArray = []; // array to store all the particles
 let hue = 0; // hue is the color
+let saturation = 0; // saturation is the amount of gray
+let light = 0; // light is the amount of black
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 // to view the list of all the properties and methods of the context
@@ -21,7 +23,7 @@ const mouse = {
 canvas.addEventListener("click", function (event) {
   mouse.x = event.x;
   mouse.y = event.y;
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 13; i++) {
     particlesArray.push(new Particle());
   }
 });
@@ -29,7 +31,7 @@ canvas.addEventListener("click", function (event) {
 canvas.addEventListener("mousemove", function (event) {
   mouse.x = event.x;
   mouse.y = event.y;
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     particlesArray.push(new Particle());
   }
 });
@@ -72,7 +74,10 @@ function handleParticles() {
       if (distance < 100) {
         ctx.beginPath();
         ctx.strokeStyle = particlesArray[i].color;
-        ctx.lineWidth = particlesArray[i].size/15;
+        // change line width based on the distance between the particles
+        // > 100 will give a particle blast effect with pixie dust
+        
+        ctx.lineWidth = particlesArray[i].size / 111;
         ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
         ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
         ctx.stroke();
@@ -89,11 +94,10 @@ function handleParticles() {
 function animate() {
   // clear the canvas before drawing the next frame
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // ctx.fillStyle = "rgba(0, 0, 0, 0.02)";
-  // ctx.fillRect(0, 0, canvas.width, canvas.height);
   handleParticles();
-  hue += 2; // increment the hue
-  // call the drawCircle function
+  hue += Math.PI; // increment the hue
+  saturation += 2; // increment the saturation
+  light += 2; // increment the light
   requestAnimationFrame(animate);
 }
 animate();
